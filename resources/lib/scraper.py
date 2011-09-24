@@ -27,11 +27,13 @@ def getVideos(category, page=1):
     html = __getAjaxContent(url, post)
     tree = BeautifulSoup(html)
     videos = list()
-    for element in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
-        videos.append({'title': element.h3.string,
-                       'link': element['href'][1:],
-                       'image': element.img['src']})
-    has_next_page = (len(videos) >= 20)
+    elements = tree.find('ul', {'data-role': 'listview'}).findAll('a')
+    for element in elements:
+        if re.search(re.compile('/video/'), element['href']):
+            videos.append({'title': element.h3.string,
+                           'link': element['href'][1:],
+                           'image': element.img['src']})
+    has_next_page = (len(elements) >= 20)
     return videos, has_next_page
 
 
