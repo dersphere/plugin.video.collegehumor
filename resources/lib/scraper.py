@@ -12,8 +12,7 @@ MAIN_URL = 'http://m.collegehumor.com/'
 
 def getCategories():
     url = MAIN_URL + 'videos/browse'
-    html = __getAjaxContent(url)
-    tree = BeautifulSoup(html)
+    tree = __getTree(url)
     categories = list()
     for element in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
         categories.append({'title': element.string,
@@ -24,8 +23,7 @@ def getCategories():
 def getVideos(category, page=1):
     post = {'render_mode': 'ajax'}
     url = MAIN_URL + '%s/page:%s' % (category, page)
-    html = __getAjaxContent(url, post)
-    tree = BeautifulSoup(html)
+    tree = __getTree(url, post)
     videos = list()
     elements = tree.find('ul', {'data-role': 'listview'}).findAll('a')
     for element in elements:
@@ -39,12 +37,11 @@ def getVideos(category, page=1):
 
 def getVideoFile(link):
     url = MAIN_URL + link
-    html = __getAjaxContent(url)
-    tree = BeautifulSoup(html)
+    tree = __getTree(url)
     return tree.find('video')['src']
 
 
-def __getAjaxContent(url, data_dict=None):
+def __getTree(url, data_dict=None):
     if data_dict:
         post_data = urlencode(data_dict)
     else:
@@ -54,4 +51,5 @@ def __getAjaxContent(url, data_dict=None):
     req.add_header('Accept', ('text/html,application/xhtml+xml,'
                               'application/xml;q=0.9,*/*;q=0.8'))
     response = urllib2.urlopen(req).read()
-    return response
+    tree = BeautifulSoup(response, convertEntities=BeautifulSoup.HTML_ENTITIES)
+    return tree
