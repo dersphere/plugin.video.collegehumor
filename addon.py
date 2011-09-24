@@ -1,7 +1,7 @@
 from xbmcswift import Plugin
 import resources.lib.scraper as scraper
 
-plugin = Plugin('CollegeHumor Videos', 'plugin.video.collegehumor', __file__)
+plugin = Plugin('CollegeHumor', 'plugin.video.collegehumor', __file__)
 
 
 @plugin.route('/', default=True)
