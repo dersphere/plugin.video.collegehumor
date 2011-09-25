@@ -9,8 +9,7 @@ def show_categories():
     categories = scraper.getCategories()
     items = [{'label': category['title'],
               'url': plugin.url_for('show_videos', category=category['link'],
-                                    page='1')
-             } for category in categories]
+                                    page='1')} for category in categories]
     return plugin.add_items(items)
 
 
