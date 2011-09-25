@@ -27,7 +27,7 @@ def getVideos(category, page=1):
     videos = list()
     elements = tree.find('ul', {'data-role': 'listview'}).findAll('li')
     for element in elements:
-        if re.search(re.compile('/video/'), element.a['href']):
+        if element.a and re.search(re.compile('/video/'), element.a['href']):
             videos.append({'title': element.a.h3.string,
                            'link': element.a['href'][1:],
                            'image': element.a.img['src'],
