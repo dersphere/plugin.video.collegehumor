@@ -19,7 +19,8 @@ def show_videos(category, page):
     videos, has_next_page = scraper.getVideos(category, page)
     items = [{'label': video['title'],
               'thumbnail': video['image'],
-              'info': {'originaltitle': video['title']},
+              'info': {'originaltitle': video['title'],
+                       'tagline': video['tagline']},
               'url': plugin.url_for('watch_video', url=video['link']),
               'is_folder': False,
               'is_playable': True,

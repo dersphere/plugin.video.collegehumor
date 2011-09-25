@@ -25,12 +25,13 @@ def getVideos(category, page=1):
     url = MAIN_URL + '%s/page:%s' % (category, page)
     tree = __getTree(url, post)
     videos = list()
-    elements = tree.find('ul', {'data-role': 'listview'}).findAll('a')
+    elements = tree.find('ul', {'data-role': 'listview'}).findAll('li')
     for element in elements:
-        if re.search(re.compile('/video/'), element['href']):
-            videos.append({'title': element.h3.string,
-                           'link': element['href'][1:],
-                           'image': element.img['src']})
+        if re.search(re.compile('/video/'), element.a['href']):
+            videos.append({'title': element.a.h3.string,
+                           'link': element.a['href'][1:],
+                           'image': element.a.img['src'],
+                           'tagline': element.p.string})
     has_next_page = (len(elements) >= 20)
     return videos, has_next_page
 
