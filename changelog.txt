@@ -1,3 +1,6 @@
+1.0.2
+ changes for eden
+
 0.0.2
  dharma released version
  Fixed a small typo
