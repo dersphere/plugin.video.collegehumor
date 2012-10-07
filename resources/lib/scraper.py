@@ -15,11 +15,11 @@ MAIN_URL = 'http://m.collegehumor.com/'
 def getCategories():
     url = MAIN_URL + 'videos/browse'
     tree = __getTree(url)
-    categories = list()
-    for element in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
+    categories = []
+    for a in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
         categories.append({
-            'title': element.string,
-            'link': element['href'][1:]
+            'title': a.string,
+            'link': a['href'][1:]
         })
     return categories
 
@@ -28,27 +28,36 @@ def getVideos(category, page=1):
     post = {'render_mode': 'ajax'}
     url = MAIN_URL + '%s/page:%s' % (category, page)
     tree = __getTree(url, post)
-    videos = list()
-    elements = tree.find('ul', {'data-role': 'listview'}).findAll('li')
-    for element in elements:
-        if element.a and re.search(re.compile('/video/'), element.a['href']):
-            videos.append({
-                'title': element.a.h3.string,
-                'link': element.a['href'][1:],
-                'image': element.a.img['src'],
-                'tagline': element.p.string
-            })
-    has_next_page = (len(elements) >= 20)
+    videos = []
+    for a in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
+        videos.append({
+            'title': a.h3.string,
+            'link': a['href'][1:],
+            'image': a.img['src']
+        })
+    has_next_page = len(videos) == 24
     return videos, has_next_page
 
 
 def getVideoFile(link):
+    re_youtube = re.compile('http://www.youtube.com/embed/(\w+)')
     url = MAIN_URL + link
     tree = __getTree(url)
-    return tree.find('video')['src']
+    if tree.find('video'):
+        playback_url = tree.find('video').get('src')
+    elif tree.find('iframe', {'src': re_youtube}):
+        youtube_iframe = tree.find('iframe', {'src': re_youtube})
+        yotube_id = re.search(re_youtube, youtube_iframe['src']).group(1)
+        playback_url = ('plugin://plugin.video.youtube/'
+                        '?action=play_video&videoid=%s' % yotube_id)
+    else:
+        pass
+        # Houston, we have a problem
+    return playback_url
 
 
 def __getTree(url, data_dict=None):
+    print url
     if data_dict:
         post_data = urlencode(data_dict)
     else:

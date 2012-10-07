@@ -26,7 +26,7 @@ def show_videos(category, page):
         'thumbnail': video['image'],
         'info': {
             'originaltitle': video['title'],
-            'tagline': video['tagline']
+            #'tagline': video['tagline']
         },
         'url': plugin.url_for(
             'watch_video',
