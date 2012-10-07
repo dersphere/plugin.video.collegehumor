@@ -17,6 +17,9 @@ def getCategories():
     tree = __getTree(url)
     categories = []
     for a in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
+        if 'playlist' in a['href']:
+            print 'Skipping Playlist'
+            continue
         categories.append({
             'title': a.string,
             'link': a['href'][1:]
@@ -29,13 +32,17 @@ def getVideos(category, page=1):
     url = MAIN_URL + '%s/page:%s' % (category, page)
     tree = __getTree(url, post)
     videos = []
-    for a in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
+    elements = tree.find('ul', {'data-role': 'listview'}).findAll('a')
+    for a in elements:
+        if 'playlist' in a['href']:
+            print 'Skipping Playlist'
+            continue
         videos.append({
             'title': a.h3.string,
             'link': a['href'][1:],
             'image': a.img['src']
         })
-    has_next_page = len(videos) == 24
+    has_next_page = len(elements) == 24
     return videos, has_next_page
 
 
