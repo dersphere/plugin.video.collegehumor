@@ -3,9 +3,11 @@ import re
 from BeautifulSoup import BeautifulSoup
 from urllib import urlencode
 
-IPAD_USERAGENT = ('Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; '
-                  'en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Versi'
-                  'on/4.0.4 Mobile/7B314 Safari/531.21.10')
+IPAD_USERAGENT = (
+    'Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; '
+    'en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Versi'
+    'on/4.0.4 Mobile/7B314 Safari/531.21.10'
+)
 
 MAIN_URL = 'http://m.collegehumor.com/'
 
@@ -15,8 +17,10 @@ def getCategories():
     tree = __getTree(url)
     categories = list()
     for element in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
-        categories.append({'title': element.string,
-                           'link': element['href'][1:]})
+        categories.append({
+            'title': element.string,
+            'link': element['href'][1:]
+        })
     return categories
 
 
@@ -28,10 +32,12 @@ def getVideos(category, page=1):
     elements = tree.find('ul', {'data-role': 'listview'}).findAll('li')
     for element in elements:
         if element.a and re.search(re.compile('/video/'), element.a['href']):
-            videos.append({'title': element.a.h3.string,
-                           'link': element.a['href'][1:],
-                           'image': element.a.img['src'],
-                           'tagline': element.p.string})
+            videos.append({
+                'title': element.a.h3.string,
+                'link': element.a['href'][1:],
+                'image': element.a.img['src'],
+                'tagline': element.p.string
+            })
     has_next_page = (len(elements) >= 20)
     return videos, has_next_page
 
