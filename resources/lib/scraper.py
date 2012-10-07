@@ -38,9 +38,6 @@ def getVideos(category, page=1):
         if 'playlist' in a['href']:
             print 'Skipping Playlist'
             continue
-        if 'animation' in a['href']:
-            print 'Skipping Animation'
-            continue
         videos.append({
             'title': a.h3.string,
             'link': a['href'][1:],
