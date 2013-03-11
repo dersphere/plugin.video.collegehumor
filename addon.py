@@ -6,11 +6,11 @@ plugin = Plugin()
 
 @plugin.route('/')
 def show_categories():
-    categories = scraper.getCategories()
+    categories = scraper.get_categories()
     items = [{
         'label': category['title'],
         'path': plugin.url_for(
-            'show_videos',
+            endpoint='show_videos',
             category=category['link'],
             page='1',
         ),
@@ -20,7 +20,7 @@ def show_categories():
 
 @plugin.route('/category/<category>/<page>/')
 def show_videos(category, page):
-    videos, has_next_page = scraper.getVideos(category, page)
+    videos, has_next_page = scraper.get_videos(category, page)
     items = [{
         'label': video['title'],
         'thumbnail': video['image'],
@@ -29,7 +29,7 @@ def show_videos(category, page):
             #'tagline': video['tagline']
         },
         'path': plugin.url_for(
-            'watch_video',
+            endpoint='watch_video',
             url=video['link']
         ),
         'is_playable': True,
@@ -42,7 +42,7 @@ def show_videos(category, page):
                 next_page
             ),
             'path': plugin.url_for(
-                'show_videos',
+                endpoint='show_videos',
                 category=category,
                 page=next_page
             ),
@@ -55,7 +55,7 @@ def show_videos(category, page):
                 prev_page
             ),
             'path': plugin.url_for(
-                'show_videos',
+                endpoint='show_videos',
                 category=category,
                 page=prev_page
             ),
@@ -65,7 +65,7 @@ def show_videos(category, page):
 
 @plugin.route('/watch/<url>/')
 def watch_video(url):
-    video_url = scraper.getVideoFile(url)
+    video_url = scraper.get_video_file(url)
     return plugin.set_resolved_url(video_url)
 
 

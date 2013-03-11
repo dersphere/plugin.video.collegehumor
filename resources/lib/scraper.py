@@ -14,9 +14,9 @@ IPAD_USERAGENT = (
 )
 
 
-def getCategories():
+def get_categories():
     url = MOBILE_URL + 'videos/browse'
-    tree = __getTree(url, mobile=True)
+    tree = __get_tree(url, mobile=True)
     categories = []
     for a in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
         if 'playlist' in a['href']:
@@ -32,10 +32,10 @@ def getCategories():
     return categories
 
 
-def getVideos(category, page=1):
+def get_videos(category, page=1):
     post = {'render_mode': 'ajax'}
     url = MOBILE_URL + '%s/page:%s' % (category, page)
-    tree = __getTree(url, post, mobile=True)
+    tree = __get_tree(url, post, mobile=True)
     videos = []
     elements = tree.find('ul', {'data-role': 'listview'}).findAll('a')
     for a in elements:
@@ -51,9 +51,9 @@ def getVideos(category, page=1):
     return videos, has_next_page
 
 
-def getVideoFile(link):
+def get_video_file(link):
     url = MAIN_URL + link
-    tree = __getTree(url)
+    tree = __get_tree(url)
 
     video_object = tree.find('video')
     if video_object and video_object.get('src'):
@@ -67,7 +67,7 @@ def getVideoFile(link):
         return flv_url
 
 
-def __getTree(url, data_dict=None, mobile=True):
+def __get_tree(url, data_dict=None, mobile=True):
     print 'Opening url: %s' % url
     if data_dict:
         post_data = urlencode(data_dict)
