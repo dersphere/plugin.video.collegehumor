@@ -3,11 +3,6 @@ import re
 from BeautifulSoup import BeautifulSoup
 from urllib import urlencode
 
-IPAD_USERAGENT = (
-    'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) '
-    'AppleWebKit/531.21.10 (KHTML, like Gecko) '
-    'Version/4.0.4 Mobile/7B334b Safari/531.21.10'
-)
 
 MOBILE_URL = 'http://m.collegehumor.com/'
 MAIN_URL = 'http://www.collegehumor.com/'
@@ -15,7 +10,7 @@ MAIN_URL = 'http://www.collegehumor.com/'
 
 def getCategories():
     url = MOBILE_URL + 'videos/browse'
-    tree = __getTree(url)
+    tree = __getTree(url, mobile=True)
     categories = []
     for a in tree.find('ul', {'data-role': 'listview'}).findAll('a'):
         if 'playlist' in a['href']:
@@ -31,7 +26,7 @@ def getCategories():
 def getVideos(category, page=1):
     post = {'render_mode': 'ajax'}
     url = MOBILE_URL + '%s/page:%s' % (category, page)
-    tree = __getTree(url, post)
+    tree = __getTree(url, post, mobile=True)
     videos = []
     elements = tree.find('ul', {'data-role': 'listview'}).findAll('a')
     for a in elements:
@@ -102,14 +97,15 @@ def getVideoFile(link):
     raise NotImplementedError
 
 
-def __getTree(url, data_dict=None):
+def __getTree(url, data_dict=None, mobile=True):
     print 'Opening url: %s' % url
     if data_dict:
         post_data = urlencode(data_dict)
     else:
         post_data = ' '
     req = urllib2.Request(url, post_data)
-    req.add_header('User-Agent', IPAD_USERAGENT)
+    if mobile:
+        req.add_header('Cookie', 'force_mobile=1')
     req.add_header('X-Requested-With', 'XMLHttpRequest')
     response = urllib2.urlopen(req).read()
     tree = BeautifulSoup(response, convertEntities=BeautifulSoup.HTML_ENTITIES)
