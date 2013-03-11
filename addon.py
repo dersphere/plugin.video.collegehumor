@@ -1,15 +1,15 @@
-from xbmcswift import Plugin
+from xbmcswift2 import Plugin
 import resources.lib.scraper as scraper
 
-plugin = Plugin('CollegeHumor', 'plugin.video.collegehumor', __file__)
+plugin = Plugin()
 
 
-@plugin.route('/', default=True)
+@plugin.route('/')
 def show_categories():
     categories = scraper.getCategories()
     items = [{
         'label': category['title'],
-        'url': plugin.url_for(
+        'path': plugin.url_for(
             'show_videos',
             category=category['link'],
             page='1',
@@ -28,11 +28,10 @@ def show_videos(category, page):
             'originaltitle': video['title'],
             #'tagline': video['tagline']
         },
-        'url': plugin.url_for(
+        'path': plugin.url_for(
             'watch_video',
             url=video['link']
         ),
-        'is_folder': False,
         'is_playable': True,
     } for video in videos]
     if has_next_page:
@@ -42,7 +41,7 @@ def show_videos(category, page):
                 plugin.get_string(30001),
                 next_page
             ),
-            'url': plugin.url_for(
+            'path': plugin.url_for(
                 'show_videos',
                 category=category,
                 page=next_page
@@ -55,7 +54,7 @@ def show_videos(category, page):
                 plugin.get_string(30001),
                 prev_page
             ),
-            'url': plugin.url_for(
+            'path': plugin.url_for(
                 'show_videos',
                 category=category,
                 page=prev_page
