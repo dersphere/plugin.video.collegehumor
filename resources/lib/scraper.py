@@ -41,7 +41,7 @@ def get_categories():
         if 'playlist' in a['href']:
             print 'Skipping Playlist'
             continue
-        elif 'video' in a['href']:
+        elif a['href'].startswith('/video'):
             print 'Skipping'
             continue
         categories.append({
