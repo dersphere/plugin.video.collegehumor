@@ -11,6 +11,10 @@
     <extension point="xbmc.addon.metadata">
         <language>en</language>
         <platform>all</platform>
+        <website>http://www.collegehumor.com</website>
+        <source>https://github.com/dersphere/plugin.video.collegehumor</source>
+        <forum>http://forum.xbmc.org/showthread.php?tid=110950</forum>
+        <email>sphere@dersphere.de</email>
         <summary lang="ar">مشاهدة فيديو من www.collegehumor.com</summary>
         <summary lang="be">Watch videos from www.collegehumor.com</summary>
         <summary lang="bg">Гледайте видеа от www.collegehumor.com</summary>
