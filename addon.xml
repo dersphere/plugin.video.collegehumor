@@ -16,6 +16,7 @@
         <source>https://github.com/dersphere/plugin.video.collegehumor</source>
         <forum>http://forum.xbmc.org/showthread.php?tid=110950</forum>
         <email>sphere@dersphere.de</email>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
         <summary lang="ar">مشاهده المقاطع المرئيه من الموقع الشهير collegehumor.com</summary>
         <summary lang="be">Watch videos from www.collegehumor.com</summary>
         <summary lang="bg">Гледайте видеа от www.collegehumor.com</summary>
